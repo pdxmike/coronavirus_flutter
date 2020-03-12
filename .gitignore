@@ -9,6 +9,7 @@
 .history
 .svn/
 .vscode/
+api_keys.dart
 
 # IntelliJ related
 *.iml
