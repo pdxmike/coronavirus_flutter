@@ -10,19 +10,28 @@ class DataRepository {
 
   String _accessToken;
 
-  Future<int> getEndpointData(Endpoint endpoint) async {
+  Future<int> getEndpointData(Endpoint endpoint) async =>
+    await _getDataRefreshingToken<int>(
+      onGetData: () => apiService.getEndpointData(
+          accessToken: _accessToken, endpoint: endpoint),
+    );
+
+  Future<EndpointsData> getAllEndpointData() async =>
+    await _getDataRefreshingToken<EndpointsData>(
+      onGetData: _getAllEndpointsData,
+    );
+
+  Future<T> _getDataRefreshingToken<T>({Future<T> Function() onGetData}) async {
     try {
       if (_accessToken == null) {
         _accessToken = await apiService.getAccessToken();
       }
-      return await apiService.getEndpointData(
-          accessToken: _accessToken, endpoint: endpoint);
+      return await onGetData();
     } on Response catch (response) {
       // if unauthorized, get generate new access token
       if (response.statusCode == 401) {
         _accessToken = await apiService.getAccessToken();
-        return await apiService.getEndpointData(
-            accessToken: _accessToken, endpoint: endpoint);
+        return await onGetData();
       }
       rethrow;
     }
@@ -46,12 +55,14 @@ class DataRepository {
     // Future.wait takes list of Futures, executes in parallel and returns single Future w/ a List of responses vs doing await on each
     // call one at a time sequentially.  Much more performant.
     // All endpoints data I make here can be represented as Map<Endpoint, int>
-    return EndpointsData(values: {
-      Endpoint.cases: values[0],
-      Endpoint.casesSuspected: values[1],
-      Endpoint.casesConfirmed: values[2],
-      Endpoint.deaths: values[3],
-      Endpoint.recovered: values[4],
-    },);
+    return EndpointsData(
+      values: {
+        Endpoint.cases: values[0],
+        Endpoint.casesSuspected: values[1],
+        Endpoint.casesConfirmed: values[2],
+        Endpoint.deaths: values[3],
+        Endpoint.recovered: values[4],
+      },
+    );
   }
 }
