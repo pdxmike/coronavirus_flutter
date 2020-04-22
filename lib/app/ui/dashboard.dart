@@ -21,11 +21,7 @@ class _DashboardState extends State<Dashboard> {
   Future<void> _updateData() async {
     final dataRepository = Provider.of<DataRepository>(context, listen: false);
     final cases = await dataRepository.getEndpointData(Endpoint.cases);
-    setState(
-      () {
-        _cases = cases;
-      },
-    );
+    setState(() => _cases = cases);
   }
 
   @override
@@ -34,13 +30,16 @@ class _DashboardState extends State<Dashboard> {
         appBar: AppBar(
           title: Text('Coronavirus Tracker'),
         ),
-        body: ListView(
-          children: <Widget>[
-            EndpointCard(
-              endpoint: Endpoint.cases,
-              value: _cases,
-            ),
-          ],
+        body: RefreshIndicator(
+          onRefresh: _updateData,
+          child: ListView(
+            children: <Widget>[
+              EndpointCard(
+                endpoint: Endpoint.cases,
+                value: _cases,
+              ),
+            ],
+          ),
         ));
   }
 }
