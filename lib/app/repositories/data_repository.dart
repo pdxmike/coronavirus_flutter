@@ -23,6 +23,7 @@ class DataRepository {
     );
 
   Future<T> _getDataRefreshingToken<T>({Future<T> Function() onGetData}) async {
+    // throw 'error'; fake an error if testing errors
     try {
       if (_accessToken == null) {
         _accessToken = await apiService.getAccessToken();
