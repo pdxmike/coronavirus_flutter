@@ -31,7 +31,7 @@ class _DashboardState extends State<Dashboard> {
     final formatter = LastUpdatedDateFormatter(
       lastUpdated: _endpointsData != null
           ? _endpointsData.values[Endpoint.cases].date
-          : '',
+          : null,
     );
     return Scaffold(
         appBar: AppBar(
