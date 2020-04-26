@@ -3,6 +3,7 @@ import 'package:coronavirus/app/repositories/enpoints_data.dart';
 import 'package:coronavirus/app/services/api.dart';
 import 'package:coronavirus/app/ui/endpoint_card.dart';
 import 'package:coronavirus/app/ui/last_updated_status_text.dart';
+import 'package:coronavirus/app/ui/show_alert_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'dart:io';
@@ -27,8 +28,13 @@ class _DashboardState extends State<Dashboard> {
           Provider.of<DataRepository>(context, listen: false);
       final cases = await dataRepository.getAllEndpointsData();
       setState(() => _endpointsData = cases);
-    } on SocketException catch (e) {
-      print(e);
+    } on SocketException catch (_) {
+      showAlertDialog(
+        context: context,
+        title: 'Connection Error',
+        content: 'Could not retrive data.\nPlease try again later.',
+        defaultActionText: 'OK',
+      );
     }
   }
 
