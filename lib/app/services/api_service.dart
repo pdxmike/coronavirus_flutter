@@ -56,7 +56,6 @@ class APIService {
     Endpoint.cases: 'cases',
     Endpoint.casesSuspected: 'data',
     Endpoint.casesConfirmed: 'data',
-    Endpoint.confirmed: 'data',
     Endpoint.deaths: 'data',
     Endpoint.recovered: 'data',
   };
