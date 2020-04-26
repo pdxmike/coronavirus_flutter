@@ -16,9 +16,7 @@ class EndpointCard extends StatelessWidget {
 
   static Map<Endpoint, EndpointCardData> _cardsData = {
     Endpoint.cases:
-        EndpointCardData('Cases', 'assets/count.png', Color(0xFFFFF492)),
-    Endpoint.casesSuspected: EndpointCardData(
-        'Suspected Cases', 'assets/suspect.png', Color(0xFFEEDA28)),
+        EndpointCardData('Cases', 'assets/suspect.png', Color(0xFFFFF492)),
     Endpoint.casesConfirmed: EndpointCardData(
         'Confirmed Cases', 'assets/fever.png', Color(0xFFE99600)),
     Endpoint.deaths:
